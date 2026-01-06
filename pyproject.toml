@@ -1,0 +1,50 @@
+[project]
+name = "rag-engine"
+version = "0.1.0"
+description = "Backend engine used on the RAG"
+requires-python = ">=3.13,<3.14"
+
+dependencies = [
+  "fastapi>=0.115,<0.116",
+  "gunicorn>=22,<23",
+  "uvicorn>=0.30,<0.31",
+
+  "langchain>=1.0,<2.0",
+  "langchain-openai>=1.0,<2.0",
+  "langchain-community>=0.0.38",
+]
+
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.4,<0.5",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.4"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+fix = true
+
+select = [
+  "e",   # pycodestyle errors
+  "f",   # pyflakes
+  "i",   # isort
+  "up",  # pyupgrade
+  "b",   # bugbear
+]
+
+ignore = [
+  "e501",  # line-length
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
