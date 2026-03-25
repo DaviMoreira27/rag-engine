@@ -10,8 +10,12 @@ dependencies = [
   "uvicorn>=0.30,<0.31",
 
   "langchain>=1.0,<2.0",
-  "langchain-openai>=1.0,<2.0",
+  "langchain-anthropic>=1.0,<2.0",
   "langchain-community>=0.0.38",
+  "pytest >= 9.0.2",
+  "langchain-text-splitters >= 1.1.1",
+  "langchain-community >= 0.4.1",
+  "python-dotenv (>=1.2.2,<2.0.0)"
 ]
 
 [project.optional-dependencies]
@@ -28,6 +32,7 @@ package-mode = false
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4"
+taskipy = "^1.14.1"
 
 [tool.ruff]
 line-length = 100
@@ -48,3 +53,12 @@ ignore = [
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.taskipy.tasks]
+test = "pytest tests/ -v"
+test-unit = "pytest tests/unit/ -v"
+test-integration = "pytest tests/integration/ -v"
