@@ -9,6 +9,7 @@ load_dotenv()
 class ModelConfig:
     api_key: str
     provider: str
+    model: str
 
 class ChatModel(Enum):
     # Anthropic
@@ -46,12 +47,12 @@ class Config:
             api_key = os.getenv("ANTHROPIC_API_KEY")
             if api_key is None:
                 raise ValueError("ANTHROPIC_API_KEY not set")
-            return ModelConfig(api_key=api_key, provider="anthropic")
+            return ModelConfig(api_key=api_key, provider="anthropic", model=model.value)
 
         if model in GOOGLE_MODELS:
             api_key = os.getenv("GOOGLE_API_KEY")
             if api_key is None:
                 raise ValueError("GOOGLE_API_KEY not set")
-            return ModelConfig(api_key=api_key, provider="google")
+            return ModelConfig(api_key=api_key, provider="google", model=model.value)
 
         raise ValueError(f"Unknown model: {model}")
