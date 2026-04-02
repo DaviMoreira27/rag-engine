@@ -15,7 +15,9 @@ dependencies = [
   "pytest >= 9.0.2",
   "langchain-text-splitters >= 1.1.1",
   "langchain-community >= 0.4.1",
-  "python-dotenv (>=1.2.2,<2.0.0)"
+  "python-dotenv (>=1.2.2,<2.0.0)",
+  "langchain-google-genai >= 4.2.1",
+  "langchain_chroma >= 1.1.0"
 ]
 
 [project.optional-dependencies]
