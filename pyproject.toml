@@ -20,7 +20,8 @@ dependencies = [
   "langchain_chroma >= 1.1.0",
   "beautifulsoup4 == 4.14.3",
   "SQLAlchemy == 2.0.48",
-  "asyncpg == 0.31.0"
+  "asyncpg == 0.31.0",
+  "alembic == 1.18.4"
 ]
 
 [project.optional-dependencies]
@@ -67,3 +68,5 @@ pythonpath = ["."]
 test = "pytest tests/ -v"
 test-unit = "pytest tests/unit/ -v -s"
 test-integration = "pytest tests/integration/ -v -s"
+migrate = "alembic upgrade head"
+migration = "alembic revision --autogenerate -m"

@@ -78,4 +78,4 @@ class Config:
             raise ValueError('SQL_DB_HOST is not set')
 
 
-        return f"postgresql+asyncpg//:{user}:{password}@{host}/{db_name}"
+        return f"postgresql+asyncpg://{user}:{password}@{host}/{db_name}"
