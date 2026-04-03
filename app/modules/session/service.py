@@ -3,7 +3,7 @@ from fastapi import Depends
 from app.config import Config
 from app.modules.session.interface import SessionRepository
 from app.modules.session.repository import RedisSessionRepository
-from app.redis import get_redis
+from app.redis import get_session_redis
 from app.modules.user.model import User
 from uuid import uuid4
 
@@ -34,7 +34,7 @@ class SessionService:
             await self.repository.remove(session_id)
 
 def get_session_service(
-    r: asyncredis.Redis = Depends(get_redis),
+    r: asyncredis.Redis = Depends(get_session_redis),
 ) -> SessionService:
     ttl = Config.get_session_ttl()
     repository = RedisSessionRepository(r=r)
