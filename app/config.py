@@ -41,6 +41,14 @@ GOOGLE_MODELS = {
     EmbeddingModels.GEMINI_001
 }
 
+@dataclass
+class RedisConfig:
+    host: str
+    port: int
+    username: str
+    password: str
+    max_connections: int
+
 class Config:
     @staticmethod
     def get_model_config(model: ChatModel | EmbeddingModels) -> ModelConfig:
@@ -79,3 +87,31 @@ class Config:
 
 
         return f"postgresql+asyncpg://{user}:{password}@{host}/{db_name}"
+
+    @staticmethod
+    def get_redis_config() -> RedisConfig:
+        host = os.getenv('REDIS_HOST')
+        port = os.getenv('REDIS_PORT')
+        username = os.getenv('REDIS_USERNAME')
+        password = os.getenv('REDIS_PASSWORD')
+        max_connections = os.getenv('REDIS_MAX_CONNECTIONS', 20)
+
+        if host is None:
+            raise ValueError('REDIS_HOST is not set')
+
+        if port is None:
+            raise ValueError('REDIS_PORT is not set')
+
+        if username is None:
+            raise ValueError('REDIS_USERNAME is not set')
+
+        if password is None:
+            raise ValueError('REDIS_PASSWORD is not set')
+
+        return RedisConfig(
+            host=host,
+            port=int(port),
+            username=username,
+            password=password,
+            max_connections=int(max_connections),
+        )
