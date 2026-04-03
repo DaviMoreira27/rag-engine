@@ -4,9 +4,13 @@
 4. Run test command with `poetry run task test`
 5. To run the database:
 ```sh
+docker rm rag-postgres
+
 docker run -d \
   --name rag-postgres \
   --env-file .env \
   -p 5432:5432 \
   postgres:16-alpine
+  
+docker exec -it rag-postgres psql -U postgres -d rag_engine -c "SELECT * FROM alembic_version;"
   ```
