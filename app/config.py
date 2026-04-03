@@ -115,3 +115,8 @@ class Config:
             password=password,
             max_connections=int(max_connections),
         )
+
+    @staticmethod
+    def get_session_ttl():
+        ttl = os.getenv('SESSION_TTL', 3600 * 12) # 12 hours
+        return int(ttl)
