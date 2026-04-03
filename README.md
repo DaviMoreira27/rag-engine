@@ -13,4 +13,10 @@ docker run -d \
   postgres:16-alpine
   
 docker exec -it rag-postgres psql -U postgres -d rag_engine -c "SELECT * FROM alembic_version;"
+
+docker run -d \
+  --name rag-redis \
+  --env-file .env \
+  -p 6379:6379 \
+  redis:7-alpine
   ```

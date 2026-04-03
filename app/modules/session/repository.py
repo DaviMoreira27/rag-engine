@@ -12,9 +12,9 @@ class RedisSessionRepository(SessionRepository):
         # this is a known issue and has not been released yet (7.4.0)
         # https://github.com/redis/redis-py/issues/2399
         await self.r.hset(session_id, mapping=data)  # type: ignore[misc]
-            await self.r.expire(session_id, ttl)  # type: ignore[misc]
-            if set_key:
-                await self.r.sadd(set_key, session_id)  # type: ignore[misc]
+        await self.r.expire(session_id, ttl)  # type: ignore[misc]
+        if set_key:
+            await self.r.sadd(set_key, session_id)  # type: ignore[misc]
 
     async def get(self, session_id: str) -> dict | None:
         data = await self.r.hgetall(session_id)  # type: ignore[misc]
@@ -24,7 +24,7 @@ class RedisSessionRepository(SessionRepository):
         data = await self.r.hgetall(session_id)  # type: ignore[misc]
         if data:
             await self.r.srem(f"tenant_sessions:{data['tenant_id']}", session_id)  # type: ignore[misc]
-        await self.r.delete(session_id)  # type: ignore[misc]
+            await self.r.delete(session_id)  # type: ignore[misc]
 
     async def get_set_members(self, key: str) -> set[str]:
         return await self.r.smembers(key)  # type: ignore[misc]
