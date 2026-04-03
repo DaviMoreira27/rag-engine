@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 import os
 from dotenv import load_dotenv
+from sqlalchemy.engine.interfaces import ReflectedUniqueConstraint
 
 load_dotenv()
 
@@ -56,3 +57,25 @@ class Config:
             return ModelConfig(api_key=api_key, provider="google", model=model.value)
 
         raise ValueError(f"Unknown model: {model}")
+
+    @staticmethod
+    def get_database_connection_url():
+        user = os.getenv('SQL_USER')
+        password = os.getenv('SQL_PASSWORD')
+        db_name = os.getenv('SQL_DB_NAME')
+        host = os.getenv('SQL_DB_HOST')
+
+        if (user is None):
+            raise ValueError('SQL_USER is not set')
+
+        if (password is None):
+            raise ValueError('SQL_PASSWORD is not set')
+
+        if (db_name is None):
+            raise ValueError('SQL_DB_NAME is not set')
+
+        if (host is None):
+            raise ValueError('SQL_DB_HOST is not set')
+
+
+        return f"postgresql+asyncpg//:{user}:{password}@{host}/{db_name}"
