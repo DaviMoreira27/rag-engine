@@ -1,6 +1,7 @@
 from langchain_core.documents import Document
 from langchain_core.messages import AIMessage
-from app.config import ChatModel, Config, EmbeddingModels
+from app.config.interface import ChatModels, EmbeddingModels
+from app.config.service import Config
 from langchain.chat_models import init_chat_model
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
@@ -16,7 +17,7 @@ class RagEngine:
         collection_name: str
     ):
        self.config_service = config_service
-       self.chat_model_config = config_service.get_model_config(ChatModel.CLAUDE_HAIKU_4_5)
+       self.chat_model_config = config_service.get_model_config(ChatModels.CLAUDE_HAIKU_4_5)
 
        self.chat_model = init_chat_model(model=self.chat_model_config.model, model_provider=self.chat_model_config.provider)
        self.embedding_model = GoogleGenerativeAIEmbeddings(model=f"models/{EmbeddingModels.GEMINI_001.value}")

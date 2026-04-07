@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from .interface import PROVIDER_MAP, ChatModels, EmbeddingModels, ModelConfig, ANTHROPIC_MODELS, GOOGLE_MODELS, RedisConfig
+from .interface import PROVIDER_MAP, ModelConfig, RedisConfig
 
 load_dotenv()
 
@@ -11,7 +11,12 @@ class Config:
         provider = PROVIDER_MAP.get(model)
         if provider is None:
             raise ValueError(f"Unknown model: {model}")
+
         api_key = os.getenv(f"{provider.upper()}_API_KEY")
+
+        if api_key is None:
+            raise ValueError(f"Unknown model, api key not setted: {model}")
+
         return ModelConfig(api_key=api_key, provider=provider, model=model.value)
 
     @staticmethod
