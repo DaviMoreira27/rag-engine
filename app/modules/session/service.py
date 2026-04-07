@@ -1,6 +1,6 @@
 import redis.asyncio as asyncredis
 from fastapi import Depends
-from app.config import Config
+from app.config.service import Config
 from app.modules.session.interface import SessionRepository
 from app.modules.session.repository import RedisSessionRepository
 from app.redis import get_session_redis
