@@ -1,13 +1,13 @@
-"""HTTP exception handlers - maps domain exceptions to HTTP responses"""
-
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 import logging
 
 from app.core.exceptions import (
     AppException,
+    DatabaseException,
     InfrastructureException,
     BadRequestError,
+    InternalServerException,
     UnauthorizedError,
     ForbiddenError,
     NotFoundError,
@@ -18,7 +18,6 @@ from app.core.exceptions import (
 
 logger = logging.getLogger(__name__)
 
-# Domain exceptions to HTTP status codes
 _DOMAIN_TO_HTTP = {
     BadRequestError: 400,
     UnauthorizedError: 401,
@@ -28,10 +27,10 @@ _DOMAIN_TO_HTTP = {
     UnprocessableEntityError: 422,
 }
 
-# Infrastructure exceptions to HTTP status codes
 _INFRA_TO_HTTP = {
     ExternalServiceException: 502,
-    InfrastructureException: 500,  # fallback
+    DatabaseException: 502,
+    InternalServerException: 500,
 }
 
 
@@ -50,8 +49,11 @@ def resolve_status_code(exc: Exception) -> int:
     return 500
 
 
-async def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
+async def app_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     """Handle business logic exceptions"""
+    if not isinstance(exc, AppException):
+        raise exc
+
     status_code = resolve_status_code(exc)
 
     logger.error(
@@ -70,9 +72,12 @@ async def app_exception_handler(request: Request, exc: AppException) -> JSONResp
 
 
 async def infrastructure_exception_handler(
-    request: Request, exc: InfrastructureException
+    request: Request, exc: Exception
 ) -> JSONResponse:
     """Handle infrastructure/technical exceptions"""
+    if not isinstance(exc, InfrastructureException):
+        raise exc
+
     status_code = resolve_status_code(exc)
 
     logger.error(
