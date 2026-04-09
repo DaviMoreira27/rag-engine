@@ -6,7 +6,7 @@ from sqlalchemy.sql.sqltypes import String
 from sqlalchemy.types import Boolean
 from uuid import uuid4
 
-from app.database import BaseModel
+from app.core.database import BaseModel
 
 if TYPE_CHECKING:
     from app.modules.user.model import User

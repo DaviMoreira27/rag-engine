@@ -1,5 +1,4 @@
-from app.exceptions import InvalidCredentialsError
-
+from app.modules.auth.exception import InvalidCredentialsError
 from app.modules.auth.schema import CreateUserRequest
 
 from app.modules.user.service import UserService

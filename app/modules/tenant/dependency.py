@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import get_db
+from app.core.database import get_db
 from app.modules.tenant.interface import TenantRepositoryPort
 from app.modules.tenant.repository import TenantRepository
 from app.modules.tenant.service import TenantService

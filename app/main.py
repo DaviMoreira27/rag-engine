@@ -2,9 +2,13 @@ from fastapi import FastAPI, APIRouter
 from app.modules.file_uploader.router import router as file_uploader_router
 from app.modules.web_scraper.router import router as web_scraper_router
 from app.modules.user.router import router as user_router
+from app.http.exception_handler import setup_exception_handlers
 
 def create_app() -> FastAPI:
     app = FastAPI(title="rag-engine")
+
+    # Setup exception handlers
+    setup_exception_handlers(app)
 
     @app.get("/health", tags=["health"])
     async def health_check():

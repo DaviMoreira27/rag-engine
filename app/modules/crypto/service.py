@@ -1,7 +1,7 @@
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError, InvalidHashError
 
-from app.exceptions import InvalidCredentialsError
+from app.modules.auth.exception import InvalidCredentialsError
 from app.modules.crypto.interface import CryptoServicePort
 
 class ArgonCryptoService(CryptoServicePort):
