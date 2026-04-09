@@ -6,9 +6,9 @@ from app.modules.session.service import SessionService
 from app.modules.crypto.interface import CryptoServicePort
 
 from app.modules.tenant.dependency import get_tenant_service
-from app.modules.user.dependencies import get_user_service
-from app.modules.session.dependencies import get_session_service
-from app.modules.crypto.dependencies import get_crypto_service
+from app.modules.user.dependency import get_user_service
+from app.modules.session.dependency import get_session_service
+from app.modules.crypto.dependency import get_crypto_service
 
 from app.modules.tenant.service import TenantService
 from app.modules.user.service import UserService
