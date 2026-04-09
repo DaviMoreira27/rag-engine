@@ -3,8 +3,11 @@ from app.modules.file_uploader.router import router as file_uploader_router
 from app.modules.web_scraper.router import router as web_scraper_router
 from app.modules.user.router import router as user_router
 from app.http.exception_handler import setup_exception_handlers
+from app.core.config.service import Config
 
 def create_app() -> FastAPI:
+    Config.validate_all()
+
     app = FastAPI(title="rag-engine")
 
     # Setup exception handlers
