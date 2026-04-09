@@ -85,3 +85,10 @@ class Config:
                 f"Invalid ENVIRONMENT value: {env}. "
                 f"Must be one of: {', '.join([e.value for e in Environment])}"
             )
+
+    @staticmethod
+    def validate_all() -> None:
+        """Validate all required configurations at application startup"""
+        Config.get_database_connection_url()
+        Config.get_redis_config()
+        Config.get_environment()
