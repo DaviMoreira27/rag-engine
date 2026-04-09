@@ -1,0 +1,3 @@
+from app.exceptions import NotFoundError
+
+class TenantNotFoundError(NotFoundError): ...

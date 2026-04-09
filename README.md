@@ -20,3 +20,4 @@ docker run -d \
   -p 6379:6379 \
   redis:7-alpine
   ```
+6. To run on dev mode, use: `poetry run task dev`
