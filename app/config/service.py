@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from .interface import PROVIDER_MAP, ModelConfig, RedisConfig
+from .interface import PROVIDER_MAP, ModelConfig, RedisConfig, Environment
 
 load_dotenv()
 
@@ -73,3 +73,15 @@ class Config:
     def get_session_ttl():
         ttl = os.getenv('SESSION_TTL', 3600 * 12) # 12 hours
         return int(ttl)
+
+    @staticmethod
+    def get_environment() -> Environment:
+        env = os.getenv('ENVIRONMENT', 'development').lower()
+
+        try:
+            return Environment(env)
+        except ValueError:
+            raise ValueError(
+                f"Invalid ENVIRONMENT value: {env}. "
+                f"Must be one of: {', '.join([e.value for e in Environment])}"
+            )

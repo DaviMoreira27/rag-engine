@@ -2,6 +2,11 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Set
 
+class Environment(Enum):
+    DEVELOPMENT = "development"
+    TESTING = "testing"
+    PRODUCTION = "production"
+
 @dataclass
 class ModelConfig:
     api_key: str
