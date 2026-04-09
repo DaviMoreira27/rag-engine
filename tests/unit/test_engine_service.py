@@ -1,10 +1,11 @@
 import pytest
 
-from app.config import ChatModel, Config
+from app.core.config.interface import ChatModels
+from app.core.config.service import Config
 
 
 def test_get_anthropic_api_key_returns_value():
-    key = Config.get_model_config(ChatModel.CLAUDE_SONNET_4_6)
+    key = Config.get_model_config(ChatModels.CLAUDE_SONNET_4_6)
 
     assert key.provider == "anthropic"
 
@@ -14,11 +15,11 @@ def test_get_anthropic_api_key_raises_when_missing(monkeypatch: pytest.MonkeyPat
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
 
     with pytest.raises(ValueError, match="ANTHROPIC_API_KEY not set"):
-        Config.get_model_config(ChatModel.CLAUDE_SONNET_4_6)
+        Config.get_model_config(ChatModels.CLAUDE_SONNET_4_6)
 
 
 def test_get_google_api_key_returns_value():
-    key = Config.get_model_config(ChatModel.GEMINI_2_5_FLASH)
+    key = Config.get_model_config(ChatModels.GEMINI_2_5_FLASH)
 
     assert key.provider == "google"
 
@@ -27,4 +28,4 @@ def test_get_google_api_key_raises_when_missing(monkeypatch: pytest.MonkeyPatch)
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
 
     with pytest.raises(ValueError, match="GOOGLE_API_KEY not set"):
-        Config.get_model_config(ChatModel.GEMINI_2_5_FLASH)
+        Config.get_model_config(ChatModels.GEMINI_2_5_FLASH)

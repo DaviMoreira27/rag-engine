@@ -1,7 +1,7 @@
 from langchain_core.documents import Document
 from langchain_core.messages import AIMessage
-from app.config.interface import ChatModels, EmbeddingModels
-from app.config.service import Config
+from app.core.config.interface import ChatModels, EmbeddingModels
+from app.core.config.service import Config
 from langchain.chat_models import init_chat_model
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma

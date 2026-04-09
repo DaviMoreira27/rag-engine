@@ -1,7 +1,7 @@
 from enum import Enum
 import redis.asyncio as aioredis
 from functools import lru_cache
-from app.config.service import Config
+from app.core.config.service import Config
 
 class RedisDatabase(Enum):
     SESSION = 0

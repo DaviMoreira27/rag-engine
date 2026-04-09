@@ -7,7 +7,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.sql.sqltypes import DateTime
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from app.config.service import Config
+from app.core.config.service import Config
 
 from pathlib import Path
 from dotenv import load_dotenv
