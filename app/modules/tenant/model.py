@@ -10,6 +10,7 @@ from app.core.database import BaseModel
 
 if TYPE_CHECKING:
     from app.modules.user.model import User
+    from app.modules.rag_instance.model import RAGInstance
 
 class Tenant(BaseModel):
     __tablename__ = "tenants"
@@ -18,3 +19,4 @@ class Tenant(BaseModel):
     is_active: Mapped[bool] = mapped_column(Boolean, default=False)
 
     users: Mapped[List[User]] = relationship(back_populates='tenant')
+    rag_instances: Mapped[List[RAGInstance]] = relationship(back_populates='tenant')
