@@ -36,8 +36,7 @@ Each RAG instance is scoped to an organization. Members can be granted access to
 poetry install
 
 # Start PostgreSQL and Redis
-docker run -d --name rag-postgres --env-file .env -p 5432:5432 postgres:16-alpine
-docker run -d --name rag-redis --env-file .env -p 6379:6379 redis:7-alpine
+docker-compose up -d
 
 # Run migrations
 poetry run task migrate
