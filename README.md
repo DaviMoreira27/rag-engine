@@ -70,3 +70,52 @@ poetry run task migration <msg>  # generate a new migration
 - LLM-level tracing and evaluation via Langfuse
 - Kafka-based streaming for long-running ingestion jobs
 - K8s deployment on EC2 (infra defined in [rag-infrastructure](https://github.com/DaviMoreira27/rag-infrastructure))
+
+
+**1. Modelar `RAGInstance`**
+Model + migration. Campos: `rag_id`, `tenant_id` (FK), `name`, `llm_provider`, `llm_model`, configurações de chunking. É a entidade central de tudo que vem depois.
+
+**2. Modelar `RAGMember` (access control)** -- TenantMember, the access control must be perfomed on the entirety of the organization
+Tabela de relação `user_id` + `rag_id` + `role` (query-only | full). Sem isso não tem como proteger nenhum endpoint de RAG.
+
+**3. CRUD de RAG**
+Endpoints para criar, listar e deletar RAGs de um tenant. Dependency que valida se o usuário tem acesso ao RAG antes de qualquer operação.
+
+**4. Migrar vector store para pgvector**
+Trocar Chroma local por pgvector. A collection precisa ser isolada por `rag_id`. Habilitar extensão no Postgres, ajustar o `RagEngine`.
+
+**5. File upload**
+Receber arquivo via multipart, fazer upload para S3 com path `{tenant_id}/{rag_id}/{filename}`, retornar referência.
+
+**6. Ingestion pipeline (síncrona primeiro)**
+Ler arquivo do S3, chunking, embedding, indexar no pgvector no contexto do `rag_id` correto. Depois de funcionar, migrar para assíncrono.
+
+**7. Web scraper**
+Mesma pipeline de ingestion, mas a entrada é uma URL. Implementar o router e reusar o pipeline.
+
+**8. Endpoint de query**
+Receber pergunta, fazer retrieval no pgvector filtrando por `rag_id`, montar prompt, chamar LLM, retornar resposta.
+
+**9. Histórico de chat**
+Modelar `ChatSession` e `ChatMessage` no Postgres. Persistir pergunta + resposta a cada query. Listar histórico por sessão.
+
+**10. Kafka: ingestion assíncrona**
+Transformar upload de arquivo em evento (`file.uploaded`). Consumer processa ingestion em background. Necessário antes de escalar.
+
+**11. Notificações (SNS + SQS + DynamoDB)**
+Ao fim da ingestion (sucesso ou erro), publicar no SNS. DynamoDB guarda histórico de notificações por usuário.
+
+**12. Instrumentação OTel**
+Adicionar traces nas operações críticas: query, ingestion, upload, auth. Exportar para Loki e Prometheus.
+
+**13. Langfuse**
+Rastrear todas as chamadas LLM: tokens, latência, modelo usado, custo estimado.
+
+**14. Grafana**
+Dashboards de latência, erros, throughput por tenant/RAG, uso de tokens.
+
+**15. Testes**
+Unitários nos services, integração com banco real e Redis, contrato nos endpoints HTTP.
+
+**16. Docker + K8s + CI/CD**
+Revisar Dockerfile, escrever manifests K8s, configurar pipeline de build/deploy no `rag-infrastructure`.
