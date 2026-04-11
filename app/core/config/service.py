@@ -25,6 +25,7 @@ class Config:
         password = os.getenv('SQL_PASSWORD')
         db_name = os.getenv('SQL_DB_NAME')
         host = os.getenv('SQL_DB_HOST')
+        port = os.getenv('SQL_DB_PORT')
 
         if (user is None):
             raise ValueError('SQL_USER is not set')
@@ -38,8 +39,11 @@ class Config:
         if (host is None):
             raise ValueError('SQL_DB_HOST is not set')
 
+        if (port is None):
+            raise ValueError('SQL_DB_HOST is not set')
 
-        return f"postgresql+asyncpg://{user}:{password}@{host}/{db_name}"
+
+        return f"postgresql+asyncpg://{user}:{password}@{host}:{port}/{db_name}"
 
     @staticmethod
     def get_redis_config() -> RedisConfig:
